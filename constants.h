@@ -1,0 +1,1 @@
+static constexpr size_t FRAMERATE = 10;
