@@ -1,7 +1,7 @@
 ﻿# CMakeList.txt : CMake project for CPlusPong, include source and define
 # project specific logic here.
 #
-cmake_minimum_required (VERSION 3.8)
+cmake_minimum_required (VERSION 3.16)
 
 # Enable Hot Reload for MSVC compilers if supported.
 if (POLICY CMP0141)
@@ -9,13 +9,21 @@ if (POLICY CMP0141)
   set(CMAKE_MSVC_DEBUG_INFORMATION_FORMAT "$<IF:$<AND:$<C_COMPILER_ID:MSVC>,$<CXX_COMPILER_ID:MSVC>>,$<$<CONFIG:Debug,RelWithDebInfo>:EditAndContinue>,$<$<CONFIG:Debug,RelWithDebInfo>:ProgramDatabase>>")
 endif()
 
-project ("CPlusPong")
+# -----------------------------
+# Project configuration
+# -----------------------------
+project(CPlusPong LANGUAGES CXX)
 
-# Add source to this project's executable.
-add_executable (CPlusPong "CPlusPong.cpp" "CPlusPong.h" "game.h" "game.cpp" "constants.h")
+# Require C++20
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
-if (CMAKE_VERSION VERSION_GREATER 3.12)
-  set_property(TARGET CPlusPong PROPERTY CXX_STANDARD 20)
-endif()
+# -----------------------------
+# Source files
+# -----------------------------
+file(GLOB_RECURSE SOURCES "src/*.cpp" "src/*.h")
 
-# TODO: Add tests and install targets if needed.
+add_executable(${PROJECT_NAME} ${SOURCES}
+        src/input_event.h)
+
