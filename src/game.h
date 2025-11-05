@@ -1,20 +1,28 @@
 #pragma once
 #include <string>
 
+#include "ball.h"
+#include "board.h"
+
 class Game {
-	// Private Fields
-	bool isGameOver;
-	int width, height;
-	// Private methods
-	static void RenderText(int i, int j, std::string symbol);
 public:
 	// Public fields
 	std::string displayMessage;
+	Board board;
 
 	// Public Methods
-	Game();
-	bool GetIsGameOver();
+	Game(int w, int h);
+	[[nodiscard]] bool GetIsGameOver() const;
 	void SetIsGameOver(bool isGameOver);
-	void Render() const;
+	void Render();
+	void Update();
 
+private:
+	// Private Fields
+	bool isGameOver = false;
+	int width, height;
+	Ball ball;
+
+	// Private methods
+	static void RenderText(int i, int j, char symbol);
 };

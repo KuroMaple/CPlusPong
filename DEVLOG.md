@@ -1,3 +1,9 @@
+
+## Nov 5
+- board class
+- Remove cursor flickering
+- Ball drawing to screen and ball movement
+
 ## Nov 4
 - More mac porting
 - Basic screen rendering

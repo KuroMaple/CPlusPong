@@ -4,9 +4,19 @@
 
 #ifndef CPLUSPONG_BOARD_H
 #define CPLUSPONG_BOARD_H
+#include <vector>
+#include "board_cell.h"
 
 
-class board {
+class Board {
+public:
+    Board(int w, int h);
+    [[nodiscard]] const BoardCell &GetCellDataAt(const Vector2D &pos) const;
+    void SetCellDataAt(const Vector2D &pos, char newSymbol);
+
+private:
+    int width, height;
+    std::vector<std::vector<BoardCell>> boardCells;
 
 };
 

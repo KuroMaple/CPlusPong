@@ -27,5 +27,11 @@ file(GLOB_RECURSE SOURCES "src/*.cpp" "src/*.h")
 add_executable(${PROJECT_NAME} ${SOURCES}
         src/input_event.h
         src/board.cpp
-        src/board.h)
+        src/board.h
+        src/board_cell.cpp
+        src/board_cell.h
+        src/vector2d.h
+        src/ball.cpp
+        src/ball.h
+)
 

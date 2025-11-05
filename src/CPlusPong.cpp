@@ -11,7 +11,7 @@
 int main()
 {
 	enableRawInput();
-	Game game;
+	Game game(BOARD_WIDTH, BOARD_HEIGHT);
 	while(!game.GetIsGameOver()){
 		auto lastUpdateTime = std::chrono::steady_clock::now() - std::chrono::milliseconds(FRAME_DURATION);
 
@@ -20,6 +20,7 @@ int main()
 			if (currTime - lastUpdateTime >= FRAME_DURATION) {
 
 				lastUpdateTime = currTime;
+				game.Update();
 				game.Render();
 			}
 
