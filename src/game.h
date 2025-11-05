@@ -2,17 +2,19 @@
 #include <string>
 
 class Game {
-// Fields
-private:
-	bool isOver;
+	// Private Fields
+	bool isGameOver;
 	int width, height;
+	// Private methods
+	static void RenderText(int i, int j, std::string symbol);
 public:
+	// Public fields
 	std::string displayMessage;
 
-// Methods
+	// Public Methods
 	Game();
-	bool GetIsOver();
-	void SetIsOver(bool isOver);
+	bool GetIsGameOver();
+	void SetIsGameOver(bool isGameOver);
 	void Render() const;
 
 };

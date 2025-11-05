@@ -25,5 +25,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 file(GLOB_RECURSE SOURCES "src/*.cpp" "src/*.h")
 
 add_executable(${PROJECT_NAME} ${SOURCES}
-        src/input_event.h)
+        src/input_event.h
+        src/board.cpp
+        src/board.h)
 

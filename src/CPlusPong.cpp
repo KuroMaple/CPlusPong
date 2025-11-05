@@ -12,7 +12,7 @@ int main()
 {
 	enableRawInput();
 	Game game;
-	while(!game.GetIsOver()){
+	while(!game.GetIsGameOver()){
 		auto lastUpdateTime = std::chrono::steady_clock::now() - std::chrono::milliseconds(FRAME_DURATION);
 
 		do {
@@ -34,14 +34,14 @@ int main()
 					std::cout << "S hit!" << '\n';
 					break;
 				case InputEvent::ESCAPE:
-					game.SetIsOver(true);
+					game.SetIsGameOver(true);
 					break;
 				default:
 					break;
 			}
 
 			std::this_thread::sleep_for(std::chrono::milliseconds(1));
-		} while (!game.GetIsOver());
+		} while (!game.GetIsGameOver());
 	restoreInputMode();
 	}
 	return 0;
