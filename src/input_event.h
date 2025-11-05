@@ -10,7 +10,6 @@ enum class InputEvent {
     ESCAPE,
     KEY_W,
     KEY_S,
-    // Add more keys as needed
 };
 
 #endif //CPLUSPONG_INPUT_EVENT_H

@@ -5,13 +5,14 @@ class Game {
 // Fields
 private:
 	bool isOver;
+	int width, height;
 public:
 	std::string displayMessage;
-// Methods
-public:
-	Game();
 
+// Methods
+	Game();
 	bool GetIsOver();
 	void SetIsOver(bool isOver);
+	void Render() const;
 
 };

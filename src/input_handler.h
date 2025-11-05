@@ -1,52 +1,58 @@
 #include <termios.h>
 #include <unistd.h>
-
-#include <atomic>
+#include <sys/select.h>
+#include <iostream>
 
 #include "input_event.h"
 
-void setNonCanonicalMode() {
-    struct termios term;
-    tcgetattr(STDIN_FILENO, &term);
-    term.c_lflag &= ~(ICANON | ECHO);  // Disable canonical mode and echo
-    tcsetattr(STDIN_FILENO, TCSANOW, &term);
+// Enables raw input mode: disables canonical mode and echoing
+void enableRawInput() {
+    termios settings{};
+    if (tcgetattr(STDIN_FILENO, &settings) == -1)
+        return;
+
+    settings.c_lflag &= ~(ICANON | ECHO);  // Turn off line buffering and echo
+    tcsetattr(STDIN_FILENO, TCSANOW, &settings);
 }
 
-void resetTerminalMode() {
-    struct termios term;
-    tcgetattr(STDIN_FILENO, &term);
-    term.c_lflag |= (ICANON | ECHO);  // Enable canonical mode and echo
-    tcsetattr(STDIN_FILENO, TCSANOW, &term);
+// Restores terminal to normal (canonical) mode
+void restoreInputMode() {
+    termios settings{};
+    if (tcgetattr(STDIN_FILENO, &settings) == -1)
+        return;
+
+    settings.c_lflag |= (ICANON | ECHO);
+    tcsetattr(STDIN_FILENO, TCSANOW, &settings);
 }
 
-InputEvent getKeyPress() {
-    fd_set readfds;
-    struct timeval timeout;
-    FD_ZERO(&readfds);
-    FD_SET(STDIN_FILENO, &readfds);
-    timeout.tv_sec = 0;
-    timeout.tv_usec = 10000;  // Poll every 10 ms
+// Checks if a key was pressed and returns the corresponding InputEvent
+InputEvent pollKeyboardInput() {
+    fd_set inputSet;
+    FD_ZERO(&inputSet);
+    FD_SET(STDIN_FILENO, &inputSet);
 
-    int result = select(STDIN_FILENO + 1, &readfds, NULL, NULL, &timeout);
+    timeval waitTime{};
+    waitTime.tv_sec = 0;
+    waitTime.tv_usec = 10000;  // 10 ms polling interval
 
-    if (result > 0 && FD_ISSET(STDIN_FILENO, &readfds)) {
-        char ch;
-        if (read(STDIN_FILENO, &ch, 1) == 1) {
-            switch (ch) {
-                case 27:
-                    return InputEvent::ESCAPE;
-                case 'W':
-                case 'w':
-                    return InputEvent::KEY_W;
-                case 's':
-                case 'S':
-                    return InputEvent::KEY_S;
+    int ready = select(STDIN_FILENO + 1, &inputSet, nullptr, nullptr, &waitTime);
+
+    if (ready > 0 && FD_ISSET(STDIN_FILENO, &inputSet)) {
+        char key = 0;
+        if (read(STDIN_FILENO, &key, 1) == 1) {
+            switch (key) {
+                case 27: return InputEvent::ESCAPE;
+                case 'w': case 'W': return InputEvent::KEY_W;
+                case 's': case 'S': return InputEvent::KEY_S;
+                default: break;
             }
         }
     }
+
     return InputEvent::NONE;
 }
 
-void MoveCursorToEnd() {
-    std::cout << "\033[999;999H" << std::flush;  // Move cursor to a far location
+// Moves the terminal cursor far to the bottom right (to avoid overwriting UI)
+void moveCursorToBottomRight() {
+    std::cout << "\033[999;999H" << std::flush;
 }

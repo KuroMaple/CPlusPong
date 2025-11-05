@@ -10,20 +10,21 @@
 #include  "constants.h"
 int main()
 {
-	setNonCanonicalMode();
+	enableRawInput();
 	Game game;
 	while(!game.GetIsOver()){
 		auto lastUpdateTime = std::chrono::steady_clock::now() - std::chrono::milliseconds(FRAME_DURATION);
 
 		do {
 			auto currTime = std::chrono::steady_clock::now();
-			if (currTime - lastUpdateTime > FRAME_DURATION) {
-				game.displayMessage = "Game is Active";
+			if (currTime - lastUpdateTime >= FRAME_DURATION) {
+
 				lastUpdateTime = currTime;
+				game.Render();
 			}
 
 
-			InputEvent event = getKeyPress();
+			InputEvent event = pollKeyboardInput();
 			switch (event) {
 				case InputEvent::KEY_W: {
 					std::cout << "W hit!" << '\n';
@@ -41,7 +42,7 @@ int main()
 
 			std::this_thread::sleep_for(std::chrono::milliseconds(1));
 		} while (!game.GetIsOver());
-	resetTerminalMode();
+	restoreInputMode();
 	}
 	return 0;
 }
