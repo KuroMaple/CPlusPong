@@ -3,6 +3,7 @@
 - board class
 - Remove cursor flickering
 - Ball drawing to screen and ball movement
+- Ball collision check with boundary
 
 ## Nov 4
 - More mac porting

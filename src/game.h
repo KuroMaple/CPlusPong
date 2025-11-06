@@ -25,4 +25,5 @@ private:
 
 	// Private methods
 	static void RenderText(int i, int j, char symbol);
+	void CheckCollisions();
 };

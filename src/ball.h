@@ -12,6 +12,7 @@ public:
     Vector2D GetPosition() const;
     char GetSymbol() const;
     void Update();
+    void ReflectBall();
 
 private:
     Vector2D position;

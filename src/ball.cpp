@@ -20,6 +20,11 @@ void Ball::Update() {
     position.y += velocity.y;
 }
 
+void Ball::ReflectBall() {
+    this->velocity.x *= -1;
+    this->velocity.y *= -1;
+}
+
 Vector2D Ball::GetPosition() const {
     return this->position;
 }
