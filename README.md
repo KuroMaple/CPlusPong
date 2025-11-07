@@ -10,7 +10,11 @@ A C++ practice project where I built the classic game **Pong** from scratch. Thi
 - Console-based rendering using 2D vectors
 
 ## Demo
-https://github.com/user-attachments/assets/f5a3c04a-56c6-4c3b-b1b8-17e4e14df323
+
+
+
+https://github.com/user-attachments/assets/dbe5e0d7-84de-4008-a6bb-08e7b3578391
+
 
 ## Development Log
 Follow my step-by-step development progress and learnings in the [DEVLOG.md](DEVLOG.md).
