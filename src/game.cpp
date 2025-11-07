@@ -8,8 +8,10 @@ Game::Game(const int w, const int h)
 		board(w, h),
 		ball(Vector2D(w/2 - 1, h/2 - 1), Vector2D(-1,0), '@'),
 		playerPaddle("PlayerPaddle", '|', 1, 3, true, Vector2D(0, h/2 - 1)),
-		cpuPaddle("CPUPaddle", '|', 1, 3, false, Vector2D(w - 1, h/2 - 1))
-		{}
+		cpuPaddle("CPUPaddle", '|', 1, 3, false, Vector2D(w - 1, h/2 - 1)) {
+	ballSpeed = 3; // increase speed as rally goes on
+	ballFrameCounter = 0;
+}
 
 void Game::RenderText(int i, int j, char symbol) {
 	std::cout << "\033[" << (i + 1) << ";" << (j + 1) << "H";
@@ -73,7 +75,8 @@ void Game::Render() {
 		for (int x = 0; x < width; ++x) {
 			BoardCell currCell = board.GetCellDataAt(Vector2D(x, y));
 			Vector2D ballPos = ball.GetPosition();
-			if (std::lround(ballPos.x) == x && std::lround(ballPos.y) == y) {
+
+			if (ballPos.x == x && ballPos.y == y) {
 				RenderText(y, x, ball.GetSymbol());
 			} else if (playerPaddle.IsPaddleCell(x, y)) {
 				RenderText(y, x, playerPaddle.GetSymbol());
@@ -91,8 +94,13 @@ void Game::Render() {
 }
 
 void Game::Update() {
-	this->ball.Update();
-	CheckCollisions();
+	this->ballFrameCounter++;
+	if (this->ballFrameCounter >= this->ballSpeed) {
+		this->ball.Update();
+		CheckCollisions();
+		this->ballFrameCounter = 0;
+	}
+
 }
 
 void Game::MovePaddle(MoveDirection direction) {

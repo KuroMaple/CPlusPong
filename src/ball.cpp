@@ -4,6 +4,8 @@
 
 #include "ball.h"
 
+#include <iostream>
+
 #include "constants.h"
 
 // Vector2D Ball::StartPos() {
@@ -17,15 +19,21 @@ Ball::Ball(const Vector2D &startPos, const Vector2D &startVel, const char symbol
         spawnPosition(startPos){}
 
 void Ball::Update() {
-    position.x += velocity.x;
-    position.y += velocity.y;
+    this->position += this->velocity;
 }
 
 void Ball::ReflectBall(const std::optional<Vector2D>& hitCell, const Vector2D &paddleCenter) {
-    float offset = (hitCell->y - paddleCenter.y);
-    offset *= 0.1f;
-    this->velocity.y += offset;
-    this->velocity = ReflectAcrossNormal(this->velocity, Vector2D(1.0f, 0.0f));
+    if (const int offset = hitCell->y - paddleCenter.y; offset < 0) {
+        this->velocity.y = -1;
+    } else if (offset > 0) {
+        this->velocity.y = 1;
+    } else {
+        this->velocity.y = 0;
+    }
+
+    this->velocity.x *= -1;
+
+    std::cout << "New velocity is " << this->velocity.x << " " << this->velocity.y;
 }
 
 

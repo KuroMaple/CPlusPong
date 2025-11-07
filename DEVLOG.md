@@ -1,3 +1,5 @@
+## Nov 7
+- Resolved ball jiterring
 
 ## Nov 6
 - Realistic ball bounces

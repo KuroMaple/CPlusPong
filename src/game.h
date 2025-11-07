@@ -23,9 +23,12 @@ private:
 	// Fields
 	bool isGameOver = false;
 	int width, height;
+	int ballFrameCounter;
+	int ballSpeed;
 	Ball ball;
 	Paddle playerPaddle;
 	Paddle cpuPaddle;
+
 	// Methods
 	static void RenderText(int i, int j, char symbol);
 	void CheckCollisions();
