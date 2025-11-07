@@ -11,9 +11,11 @@ Game::Game(const int w, const int h)
 		cpuPaddle("CPUPaddle", '|', 1, 3, false, Vector2D(w - 1, h/2 - 1)) {
 	ballSpeed = 3; // increase speed as rally goes on
 	ballFrameCounter = 0;
+	playerScore = 0;
+	CPUScore = 0;
 }
 
-void Game::RenderText(int i, int j, char symbol) {
+void Game::RenderText(const int i, const int j, const char symbol) {
 	std::cout << "\033[" << (i + 1) << ";" << (j + 1) << "H";
 	std::cout << symbol;
 	std::cout.flush();
@@ -23,6 +25,8 @@ void Game::CheckCollisions() {
 	auto ballPos = ball.GetPosition();
 
 	if (IsPointOver(ballPos)) {
+		// Update score before reset
+		UpdateScore();
 		ball.ResetBall();
 	}
 	if (IsBallHitWall(ballPos)) {
@@ -57,7 +61,51 @@ std::optional<std::pair<Paddle *, Vector2D>> Game::CheckPaddleHit(const Vector2D
 	return std::nullopt;
 }
 
+void Game::MoveCPUPaddle() {
+	Vector2D ballPos = ball.GetPosition();
+	Vector2D ballVel = ball.GetVelocity();
+	Vector2D paddleCenter = cpuPaddle.GetCenterPosition();
 
+	// Only moving if ball is moving towards CPU
+	if (ballVel.x > 0) {
+
+
+		// Impossible mode
+		if (ballPos.y < paddleCenter.y) {
+			cpuPaddle.MoveUp();
+		} else if (ballPos.y > paddleCenter.y) {
+			cpuPaddle.MoveDown();
+		}
+	}
+
+
+}
+
+void Game::RenderScore() const {
+	std::cout << "\033[?25l"; // Hide cursor
+
+	int scoreStartCol = width + 5;
+	int playerRow = 5;
+	int cpuRow = playerRow + 2;
+
+	std::cout << "\033[" << playerRow << ";" << scoreStartCol << "H";
+	std::cout << "Player: " << playerScore;
+
+	std::cout << "\033[" << cpuRow << ";" << scoreStartCol << "H";
+	std::cout << "CPU: " << CPUScore;
+	std::cout.flush();
+	
+	std::cout << "\033[?25h"; // Show cursor
+}
+
+void Game::UpdateScore() {
+	Vector2D ballPos = ball.GetPosition();
+	if (ballPos.x < 0) {
+		CPUScore++;
+	} else if (ballPos.x >= width) {
+		playerScore++;
+	}
+}
 
 
 bool Game::GetIsGameOver() const {
@@ -90,6 +138,8 @@ void Game::Render() {
 
 	std::cout << "\033[?25h"; // Show cursor
 
+	RenderScore();
+
 	std::cout.flush();
 }
 
@@ -100,10 +150,10 @@ void Game::Update() {
 		CheckCollisions();
 		this->ballFrameCounter = 0;
 	}
-
+	MoveCPUPaddle();
 }
 
-void Game::MovePaddle(MoveDirection direction) {
+void Game::MovePlayerPaddle(MoveDirection direction) {
 	// Move the paddle only if dimensions allow for it to be moved
 	double halfH = playerPaddle.GetHalfHeight() / 2;
 

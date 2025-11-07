@@ -12,6 +12,7 @@ class Ball {
 public:
     explicit Ball(const Vector2D &startPos, const Vector2D &startVel, char symbol = '@');
     [[nodiscard]] Vector2D GetPosition() const;
+    [[nodiscard]] Vector2D GetVelocity() const;
     char GetSymbol() const;
     void Update();
     void ReflectBall(const std::optional<Vector2D>& hitCell, const Vector2D &paddleCenter);

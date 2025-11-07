@@ -32,8 +32,6 @@ void Ball::ReflectBall(const std::optional<Vector2D>& hitCell, const Vector2D &p
     }
 
     this->velocity.x *= -1;
-
-    std::cout << "New velocity is " << this->velocity.x << " " << this->velocity.y;
 }
 
 
@@ -48,6 +46,10 @@ void Ball::ResetBall() {
 
 Vector2D Ball::GetPosition() const {
     return this->position;
+}
+
+Vector2D Ball::GetVelocity() const {
+    return  this->velocity;
 }
 
 char Ball::GetSymbol() const {

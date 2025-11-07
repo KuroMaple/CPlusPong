@@ -45,17 +45,14 @@ void Paddle::UpdatePaddleCells() {
     }
 }
 
-double Paddle::GetHalfHeight() {
+double Paddle::GetHalfHeight() const {
     return static_cast<double>(height) / 2;
 }
 
 bool Paddle::IsPaddleCell(int x, int y) {
-    for (auto pc : paddleCells) {
-        if (x == pc.x && y == pc.y) {
-            return true;
-        }
-    }
-    return false;
+    return std::ranges::any_of(paddleCells, [x, y](const Vector2D& pc) {
+        return pc.x == x and pc.y == y;
+    });
 }
 
 std::optional<Vector2D> Paddle::GetHitCell(const Vector2D &ballPos) const {

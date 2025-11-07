@@ -28,13 +28,11 @@ int main()
 			InputEvent event = pollKeyboardInput();
 			switch (event) {
 				case InputEvent::KEY_W: {
-					std::cout << "W hit!" << '\n';
-					game.MovePaddle(MoveDirection::UP);
+					game.MovePlayerPaddle(MoveDirection::UP);
 					break;
 				}
 				case InputEvent::KEY_S:
-					std::cout << "S hit!" << '\n';
-					game.MovePaddle(MoveDirection::DOWN);
+					game.MovePlayerPaddle(MoveDirection::DOWN);
 					break;
 				case InputEvent::ESCAPE:
 					game.SetIsGameOver(true);

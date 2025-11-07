@@ -17,7 +17,7 @@ public:
 	void SetIsGameOver(bool isGameOver);
 	void Render();
 	void Update();
-	void MovePaddle(MoveDirection direction);
+	void MovePlayerPaddle(MoveDirection direction);
 
 private:
 	// Fields
@@ -25,6 +25,8 @@ private:
 	int width, height;
 	int ballFrameCounter;
 	int ballSpeed;
+	int playerScore;
+	int CPUScore;
 	Ball ball;
 	Paddle playerPaddle;
 	Paddle cpuPaddle;
@@ -35,4 +37,7 @@ private:
 	[[nodiscard]] bool IsPointOver(const Vector2D& ballPos) const;
 	[[nodiscard]] bool IsBallHitWall(const Vector2D& ballPos) const;
 	std::optional<std::pair<Paddle*, Vector2D>> CheckPaddleHit(const Vector2D& ballPos);
+	void MoveCPUPaddle();
+	void RenderScore() const;
+	void UpdateScore();
 };
