@@ -27,12 +27,10 @@ void Game::CheckCollisions() {
 		ball.BounceBall();
 	}
 
-	if (auto hit = playerPaddle.GetHitCell(ballPos)) {
-		ball.ReflectBall(*hit, playerPaddle.GetCenterPosition());
-	}
-
-	if (auto hit = cpuPaddle.GetHitCell(ballPos)) {
-		ball.ReflectBall(*hit, cpuPaddle.GetCenterPosition());
+	if (const auto hitInfo = CheckPaddleHit(ballPos)) {
+		Paddle* paddle = hitInfo->first; // CPU or Player paddle?
+		Vector2D hitCell = hitInfo->second;
+		ball.ReflectBall(hitCell, paddle->GetCenterPosition());
 	}
 
 }
@@ -44,6 +42,20 @@ bool Game::IsPointOver(const Vector2D& ballPos) const {
 bool Game::IsBallHitWall(const Vector2D &ballPos) const {
 	return ballPos.y == 0 || ballPos.y == height;
 }
+
+std::optional<std::pair<Paddle *, Vector2D>> Game::CheckPaddleHit(const Vector2D &ballPos) {
+	if (auto hit = playerPaddle.GetHitCell(ballPos)) {
+		return std::pair { &playerPaddle, *hit };
+	}
+
+	if (auto hit = cpuPaddle.GetHitCell(ballPos)) {
+		return std::pair{ &cpuPaddle, *hit };
+	}
+
+	return std::nullopt;
+}
+
+
 
 
 bool Game::GetIsGameOver() const {
@@ -61,7 +73,7 @@ void Game::Render() {
 		for (int x = 0; x < width; ++x) {
 			BoardCell currCell = board.GetCellDataAt(Vector2D(x, y));
 			Vector2D ballPos = ball.GetPosition();
-			if (ballPos.x == x && ballPos.y == y) {
+			if (std::lround(ballPos.x) == x && std::lround(ballPos.y) == y) {
 				RenderText(y, x, ball.GetSymbol());
 			} else if (playerPaddle.IsPaddleCell(x, y)) {
 				RenderText(y, x, playerPaddle.GetSymbol());

@@ -22,12 +22,10 @@ void Ball::Update() {
 }
 
 void Ball::ReflectBall(const std::optional<Vector2D>& hitCell, const Vector2D &paddleCenter) {
-    this->velocity.x *= -1;
-
-    int verticalOffset = hitCell->y - paddleCenter.y;
-
-    velocity.y += verticalOffset;
-
+    float offset = (hitCell->y - paddleCenter.y);
+    offset *= 0.1f;
+    this->velocity.y += offset;
+    this->velocity = ReflectAcrossNormal(this->velocity, Vector2D(1.0f, 0.0f));
 }
 
 

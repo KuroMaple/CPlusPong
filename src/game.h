@@ -31,5 +31,5 @@ private:
 	void CheckCollisions();
 	[[nodiscard]] bool IsPointOver(const Vector2D& ballPos) const;
 	[[nodiscard]] bool IsBallHitWall(const Vector2D& ballPos) const;
-
+	std::optional<std::pair<Paddle*, Vector2D>> CheckPaddleHit(const Vector2D& ballPos);
 };
