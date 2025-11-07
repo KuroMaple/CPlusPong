@@ -1,4 +1,8 @@
 
+## Nov 6
+- Realistic ball bounces
+- Player and CPU paddles 
+- Paddle reflecting logic
 ## Nov 5
 - board class
 - Remove cursor flickering

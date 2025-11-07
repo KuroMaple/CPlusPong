@@ -29,10 +29,12 @@ int main()
 			switch (event) {
 				case InputEvent::KEY_W: {
 					std::cout << "W hit!" << '\n';
+					game.MovePaddle(MoveDirection::UP);
 					break;
 				}
 				case InputEvent::KEY_S:
 					std::cout << "S hit!" << '\n';
+					game.MovePaddle(MoveDirection::DOWN);
 					break;
 				case InputEvent::ESCAPE:
 					game.SetIsGameOver(true);

@@ -13,16 +13,31 @@
 Ball::Ball(const Vector2D &startPos, const Vector2D &startVel, const char symbol)
     :   position(startPos),
         velocity(startVel),
-        symbol(symbol){}
+        symbol(symbol),
+        spawnPosition(startPos){}
 
 void Ball::Update() {
     position.x += velocity.x;
     position.y += velocity.y;
 }
 
-void Ball::ReflectBall() {
+void Ball::ReflectBall(const std::optional<Vector2D>& hitCell, const Vector2D &paddleCenter) {
     this->velocity.x *= -1;
+
+    int verticalOffset = hitCell->y - paddleCenter.y;
+
+    velocity.y += verticalOffset;
+
+}
+
+
+void Ball::BounceBall() {
     this->velocity.y *= -1;
+}
+
+void Ball::ResetBall() {
+    this->position = spawnPosition;
+    this->velocity = Vector2D(-1, 0);
 }
 
 Vector2D Ball::GetPosition() const {

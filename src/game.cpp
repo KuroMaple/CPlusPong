@@ -3,11 +3,13 @@
 #include "constants.h"
 
 Game::Game(const int w, const int h)
-	: width(w),
-      height(h),
-	  board(w, h),
-	  ball(Vector2D(w/2 - 1, h/2 - 1), Vector2D(-1,-1), '@') {
-}
+	:	width(w),
+		height(h),
+		board(w, h),
+		ball(Vector2D(w/2 - 1, h/2 - 1), Vector2D(-1,0), '@'),
+		playerPaddle("PlayerPaddle", '|', 1, 3, true, Vector2D(0, h/2 - 1)),
+		cpuPaddle("CPUPaddle", '|', 1, 3, false, Vector2D(w - 1, h/2 - 1))
+		{}
 
 void Game::RenderText(int i, int j, char symbol) {
 	std::cout << "\033[" << (i + 1) << ";" << (j + 1) << "H";
@@ -16,11 +18,31 @@ void Game::RenderText(int i, int j, char symbol) {
 }
 
 void Game::CheckCollisions() {
-	auto currBallPos = ball.GetPosition();
-	// Map boundary check
-	if (currBallPos.x == 0 || currBallPos.x == width || currBallPos.y == 0 || currBallPos.y == height) {
-		ball.ReflectBall();
+	auto ballPos = ball.GetPosition();
+
+	if (IsPointOver(ballPos)) {
+		ball.ResetBall();
 	}
+	if (IsBallHitWall(ballPos)) {
+		ball.BounceBall();
+	}
+
+	if (auto hit = playerPaddle.GetHitCell(ballPos)) {
+		ball.ReflectBall(*hit, playerPaddle.GetCenterPosition());
+	}
+
+	if (auto hit = cpuPaddle.GetHitCell(ballPos)) {
+		ball.ReflectBall(*hit, cpuPaddle.GetCenterPosition());
+	}
+
+}
+
+bool Game::IsPointOver(const Vector2D& ballPos) const {
+	return ballPos.x < 0 || ballPos.x >= width;
+}
+
+bool Game::IsBallHitWall(const Vector2D &ballPos) const {
+	return ballPos.y == 0 || ballPos.y == height;
 }
 
 
@@ -38,9 +60,14 @@ void Game::Render() {
 	for (int y = 0; y < height; ++y) {
 		for (int x = 0; x < width; ++x) {
 			BoardCell currCell = board.GetCellDataAt(Vector2D(x, y));
-			if (ball.GetPosition().x == x && ball.GetPosition().y == y) {
+			Vector2D ballPos = ball.GetPosition();
+			if (ballPos.x == x && ballPos.y == y) {
 				RenderText(y, x, ball.GetSymbol());
-			} else {
+			} else if (playerPaddle.IsPaddleCell(x, y)) {
+				RenderText(y, x, playerPaddle.GetSymbol());
+			} else if (cpuPaddle.IsPaddleCell(x, y)) {
+				RenderText(y, x, cpuPaddle.GetSymbol());
+			}else {
 				RenderText(y, x, currCell.GetSymbol());
 			}
 		}
@@ -54,4 +81,24 @@ void Game::Render() {
 void Game::Update() {
 	this->ball.Update();
 	CheckCollisions();
+}
+
+void Game::MovePaddle(MoveDirection direction) {
+	// Move the paddle only if dimensions allow for it to be moved
+	double halfH = playerPaddle.GetHalfHeight() / 2;
+
+	switch (direction) {
+		case MoveDirection::UP: {
+			if (playerPaddle.GetCenterPosition().y - halfH > 0) {
+				playerPaddle.MoveUp();
+			}
+			break;
+		}
+		case MoveDirection::DOWN: {
+			if (playerPaddle.GetCenterPosition().y + halfH <= height) {
+				playerPaddle.MoveDown();
+			}
+			break;
+		}
+	}
 }

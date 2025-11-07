@@ -33,5 +33,7 @@ add_executable(${PROJECT_NAME} ${SOURCES}
         src/vector2d.h
         src/ball.cpp
         src/ball.h
+        src/paddle.cpp
+        src/paddle.h
 )
 

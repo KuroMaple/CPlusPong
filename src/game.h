@@ -3,27 +3,33 @@
 
 #include "ball.h"
 #include "board.h"
+#include "paddle.h"
 
 class Game {
 public:
-	// Public fields
+	// Fields
 	std::string displayMessage;
 	Board board;
 
-	// Public Methods
+	// Methods
 	Game(int w, int h);
 	[[nodiscard]] bool GetIsGameOver() const;
 	void SetIsGameOver(bool isGameOver);
 	void Render();
 	void Update();
+	void MovePaddle(MoveDirection direction);
 
 private:
-	// Private Fields
+	// Fields
 	bool isGameOver = false;
 	int width, height;
 	Ball ball;
-
-	// Private methods
+	Paddle playerPaddle;
+	Paddle cpuPaddle;
+	// Methods
 	static void RenderText(int i, int j, char symbol);
 	void CheckCollisions();
+	[[nodiscard]] bool IsPointOver(const Vector2D& ballPos) const;
+	[[nodiscard]] bool IsBallHitWall(const Vector2D& ballPos) const;
+
 };
