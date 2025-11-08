@@ -12,8 +12,9 @@ A C++ practice project where I built the classic game **Pong** from scratch. Thi
 ## Demo
 
 
+https://github.com/user-attachments/assets/bc5fe25e-f2b5-4731-ab9b-b068d887d292
 
-https://github.com/user-attachments/assets/dbe5e0d7-84de-4008-a6bb-08e7b3578391
+
 
 
 ## Development Log
