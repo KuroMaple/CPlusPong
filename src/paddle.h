@@ -37,7 +37,7 @@ private:
     int height;
     int moveMomentum;
     int baseSpeed = 1;
-    int maxSpeed = 2;
+    int maxSpeed = 3;
     bool isPlayerControlled;
     Vector2D centerPosition;
     std::vector<Vector2D> paddleCells;

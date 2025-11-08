@@ -22,6 +22,7 @@ public:
 	static void RenderGameOverText();
 	static void ClearScreen();
 	static void RenderYouLoseText();
+	void SetPlayerLastMoveNone();
 private:
 	// Fields
 	bool isGameOver = false;
@@ -43,4 +44,5 @@ private:
 	void MoveCPUPaddle();
 	void RenderScore() const;
 	void UpdateScore();
+
 };

@@ -40,6 +40,9 @@ int main()
 					game.SetIsGameOver(true);
 					break;
 				default:
+					if (currTime - lastUpdateTime >= PLAYER_IDLE_DURATION) {
+						game.SetPlayerLastMoveNone();
+					}
 					break;
 			}
 

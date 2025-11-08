@@ -116,6 +116,10 @@ void Game::UpdateScore() {
 	}
 }
 
+void Game::SetPlayerLastMoveNone() {
+	playerPaddle.SetLastMoveDirection(MoveDirection::NONE);
+}
+
 
 bool Game::GetIsGameOver() const {
 	return isGameOver;
