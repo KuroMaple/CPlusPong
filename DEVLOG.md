@@ -2,6 +2,7 @@
 - Resolved ball jittering
 - Score logic and display
 - CPU logic
+- Finished Game loop with Title, Game Over, and Lose Screen
 
 ## Nov 6
 - Realistic ball bounces
