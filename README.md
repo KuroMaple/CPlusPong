@@ -1,9 +1,9 @@
 # CPlusPong 
 ![C++](https://img.shields.io/badge/C%2B%2B-00599C?style=for-the-badge&logo=c%2B%2B&logoColor=white) 
 
-A C++ practice project where I built the classic game **Pong** from scratch. This project highlights my understanding of **object-oriented programming, game loop design, collision detection, and basic physics implementation** in C++.
+A C++ practice project where I built the classic game **Pong** from scratch. This project highlights my understanding of **object-oriented programming, game loop design, collision detection, and basic physics implementation** in pure raw C++.
 
-**Key features implemented:**
+**Features:**
 - Paddle and ball mechanics with smooth movement
 - Collision detection and ball reflection
 - Score tracking and game reset logic
