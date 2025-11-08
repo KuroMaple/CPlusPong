@@ -11,7 +11,7 @@
 
 class BoardCell {
 public:
-    explicit BoardCell(const Vector2D &pos, const char &sym = '.');
+    explicit BoardCell(const Vector2D &pos, const char &sym = ' ');
     [[nodiscard]] const Vector2D &GetPosition() const ;
     [[nodiscard]] const char &GetSymbol() const;
     void SetSymbol(char newSym);

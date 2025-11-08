@@ -8,7 +8,7 @@ Game::Game(const int w, const int h)
 	:	width(w),
 		height(h),
 		board(w, h),
-		ball(Vector2D(w/2 - 1, h/2 - 1), Vector2D(-1,0), '@'),
+		ball(Vector2D(w/2 - 1, h/2 - 1), Vector2D(1,0), '@'),
 		playerPaddle("PlayerPaddle", '|', 1, 3, true, Vector2D(0, h/2 - 1)),
 		cpuPaddle("CPUPaddle", '|', 1, 3, false, Vector2D(w - 1, h/2 - 1)) {
 	ballSpeed = 3; // increase speed as rally goes on
@@ -30,7 +30,7 @@ void Game::CheckCollisions() {
 		// Update score before reset
 		UpdateScore();
 		ball.ResetBall();
-		// ballSpeed = 3;
+		ballSpeed = 3;
 	}
 	if (IsBallHitWall(ballPos)) {
 		ball.BounceBall();
@@ -40,7 +40,7 @@ void Game::CheckCollisions() {
 		Paddle* paddle = hitInfo->first; // CPU or Player paddle?
 		Vector2D hitCell = hitInfo->second;
 		ball.ReflectBall(hitCell, paddle->GetCenterPosition());
-		// ballSpeed--;
+		ballSpeed--;
 	}
 
 }

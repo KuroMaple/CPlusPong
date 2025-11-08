@@ -8,7 +8,11 @@ Board::Board(const int w, const int h): width(w), height(h), boardCells(h) {
     for (int i = 0; i < height; ++i) {
         boardCells[i].reserve(width);
         for (int j = 0; j < width; ++j) {
-            boardCells[i].emplace_back(Vector2D(j, i));
+            if (i == height - 1 || i == 0 || j == width - 1 || j == 0) {
+                boardCells[i].emplace_back(Vector2D(j, i), '.');
+            } else {
+                boardCells[i].emplace_back(Vector2D(j, i));
+            }
         }
     }
 }
