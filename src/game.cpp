@@ -30,6 +30,7 @@ void Game::CheckCollisions() {
 		// Update score before reset
 		UpdateScore();
 		ball.ResetBall();
+		// ballSpeed = 3;
 	}
 	if (IsBallHitWall(ballPos)) {
 		ball.BounceBall();
@@ -39,6 +40,7 @@ void Game::CheckCollisions() {
 		Paddle* paddle = hitInfo->first; // CPU or Player paddle?
 		Vector2D hitCell = hitInfo->second;
 		ball.ReflectBall(hitCell, paddle->GetCenterPosition());
+		// ballSpeed--;
 	}
 
 }
@@ -239,6 +241,7 @@ void Game::RenderYouLoseText() {
     ██     ▀██▄▄██▀  ██▄▄▄███            ██▄▄▄▄▄▄  ▀██▄▄██▀  █▄▄▄▄▄██  ▀██▄▄▄▄█     ██        ██        ██
     ▀▀       ▀▀▀▀     ▀▀▀▀ ▀▀            ▀▀▀▀▀▀▀▀    ▀▀▀▀     ▀▀▀▀▀▀     ▀▀▀▀▀      ▀▀        ▀▀        ▀▀
 )" << '\n';
+	std::this_thread::sleep_for(std::chrono::seconds(2));
 }
 
 

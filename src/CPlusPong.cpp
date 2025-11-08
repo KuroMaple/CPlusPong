@@ -49,6 +49,7 @@ int main()
 		Game::RenderGameOverText();
 		Game::ClearScreen();
 		Game::RenderYouLoseText();
+		Game::ClearScreen();
 	restoreInputMode();
 	}
 	return 0;
