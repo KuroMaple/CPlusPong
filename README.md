@@ -40,7 +40,7 @@ Follow my step-by-step development progress and learnings in the [DEVLOG.md](DEV
     cmake --build .
     ```
     
-4. Run `CPlusPong` a large enough terminal via
+4. Run `CPlusPong` in a large enough terminal window via:
     ```
     ./CPlusPong
     ```
