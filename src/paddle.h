@@ -21,7 +21,7 @@ public:
     void MoveUp();
     void MoveDown();
     void UpdatePaddleCells();
-    [[nodiscard]] double GetHalfHeight() const;
+    [[nodiscard]] int GetHalfHeight() const;
     bool IsPaddleCell(int x, int y);
     [[nodiscard]] std::optional<Vector2D> GetHitCell(const Vector2D &ballPos) const;
 private:

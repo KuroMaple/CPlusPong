@@ -67,16 +67,17 @@ void Game::MoveCPUPaddle() {
 	Vector2D paddleCenter = cpuPaddle.GetCenterPosition();
 
 	// Only moving if ball is moving towards CPU
-	if (ballVel.x > 0) {
-
-
-		// Impossible mode
-		if (ballPos.y < paddleCenter.y) {
-			cpuPaddle.MoveUp();
-		} else if (ballPos.y > paddleCenter.y) {
-			cpuPaddle.MoveDown();
-		}
+	if (ballVel.x < 0) {
+		return;
 	}
+
+	// Impossible mode
+	if (ballPos.y < paddleCenter.y) {
+		cpuPaddle.MoveUp();
+	} else if (ballPos.y > paddleCenter.y) {
+		cpuPaddle.MoveDown();
+	}
+
 
 
 }
@@ -94,7 +95,7 @@ void Game::RenderScore() const {
 	std::cout << "\033[" << cpuRow << ";" << scoreStartCol << "H";
 	std::cout << "CPU: " << CPUScore;
 	std::cout.flush();
-	
+
 	std::cout << "\033[?25h"; // Show cursor
 }
 
@@ -155,17 +156,16 @@ void Game::Update() {
 
 void Game::MovePlayerPaddle(MoveDirection direction) {
 	// Move the paddle only if dimensions allow for it to be moved
-	double halfH = playerPaddle.GetHalfHeight() / 2;
 
 	switch (direction) {
 		case MoveDirection::UP: {
-			if (playerPaddle.GetCenterPosition().y - halfH > 0) {
+			if (playerPaddle.GetCenterPosition().y - playerPaddle.GetHalfHeight() > 0) {
 				playerPaddle.MoveUp();
 			}
 			break;
 		}
 		case MoveDirection::DOWN: {
-			if (playerPaddle.GetCenterPosition().y + halfH <= height) {
+			if (playerPaddle.GetCenterPosition().y + playerPaddle.GetHalfHeight() < height - 1) {
 				playerPaddle.MoveDown();
 			}
 			break;

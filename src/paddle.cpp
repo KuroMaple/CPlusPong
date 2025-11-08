@@ -45,8 +45,8 @@ void Paddle::UpdatePaddleCells() {
     }
 }
 
-double Paddle::GetHalfHeight() const {
-    return static_cast<double>(height) / 2;
+int Paddle::GetHalfHeight() const {
+    return height / 2;
 }
 
 bool Paddle::IsPaddleCell(int x, int y) {

@@ -1,5 +1,7 @@
 ## Nov 7
-- Resolved ball jiterring
+- Resolved ball jittering
+- Score logic and display
+- CPU logic
 
 ## Nov 6
 - Realistic ball bounces
