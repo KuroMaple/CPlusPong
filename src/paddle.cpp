@@ -10,6 +10,8 @@ Paddle::Paddle(std::string name, char sym, int w, int h, bool isPlayer, Vector2D
     :   name(name), symbol(sym), width(w), height(h), isPlayerControlled(isPlayer), centerPosition(startPos)  {
     paddleCells.reserve(width * height);
     UpdatePaddleCells();
+    lastMoveDirection = MoveDirection::NONE;
+    moveMomentum = 0;
 }
 
 std::string Paddle::GetName() {
@@ -62,6 +64,26 @@ std::optional<Vector2D> Paddle::GetHitCell(const Vector2D &ballPos) const {
         }
     }
     return std::nullopt;
+}
+
+MoveDirection Paddle::GetLastMoveDirection() const {
+    return this->lastMoveDirection;
+}
+
+void Paddle::SetLastMoveDirection(MoveDirection direction) {
+    lastMoveDirection = direction;
+}
+
+void Paddle::IncrementMoveMomentum() {
+    moveMomentum = std::min(moveMomentum + 1, maxSpeed);
+}
+
+void Paddle::ResetMoveMomentum() {
+    moveMomentum = baseSpeed;
+}
+
+int Paddle::GetMoveMoveMomentum() const {
+    return this->moveMomentum;
 }
 
 

@@ -1,5 +1,7 @@
 #include "game.h"
 #include <iostream>
+#include <thread>
+
 #include "constants.h"
 
 Game::Game(const int w, const int h)
@@ -106,11 +108,15 @@ void Game::UpdateScore() {
 	} else if (ballPos.x >= width) {
 		playerScore++;
 	}
+
+	if (playerScore == 3 || CPUScore == 3) {
+		SetIsGameOver(true);
+	}
 }
 
 
 bool Game::GetIsGameOver() const {
-	return this->isGameOver;
+	return isGameOver;
 }
 
 void Game::SetIsGameOver(bool isGameOver) {
@@ -145,30 +151,94 @@ void Game::Render() {
 }
 
 void Game::Update() {
-	this->ballFrameCounter++;
-	if (this->ballFrameCounter >= this->ballSpeed) {
-		this->ball.Update();
+	ballFrameCounter++;
+
+	if (ballFrameCounter >= ballSpeed) {
+		ball.Update();
 		CheckCollisions();
-		this->ballFrameCounter = 0;
+		ballFrameCounter = 0;
 	}
 	MoveCPUPaddle();
 }
 
-void Game::MovePlayerPaddle(MoveDirection direction) {
-	// Move the paddle only if dimensions allow for it to be moved
+void Game::MovePlayerPaddle(const MoveDirection direction) {
 
+	if (direction == playerPaddle.GetLastMoveDirection()) {
+		playerPaddle.IncrementMoveMomentum();
+	} else {
+		playerPaddle.ResetMoveMomentum();
+	}
+
+	playerPaddle.SetLastMoveDirection(direction);
+
+	const int steps = playerPaddle.GetMoveMoveMomentum();
 	switch (direction) {
 		case MoveDirection::UP: {
-			if (playerPaddle.GetCenterPosition().y - playerPaddle.GetHalfHeight() > 0) {
-				playerPaddle.MoveUp();
+			for (int i = 0; i < steps; ++i) {
+				if (playerPaddle.GetCenterPosition().y - playerPaddle.GetHalfHeight() > 0) {
+					playerPaddle.MoveUp();
+				}
 			}
 			break;
 		}
 		case MoveDirection::DOWN: {
-			if (playerPaddle.GetCenterPosition().y + playerPaddle.GetHalfHeight() < height - 1) {
-				playerPaddle.MoveDown();
+			for (int i = 0; i < steps; ++i) {
+				if (playerPaddle.GetCenterPosition().y + playerPaddle.GetHalfHeight() < height - 1) {
+					playerPaddle.MoveDown();
+				}
 			}
 			break;
 		}
 	}
 }
+
+void Game::RenderTitle() {
+	std::cout << R"(
+    ▄▄▄▄   ▄▄▄▄▄▄    ▄▄▄▄                          ▄▄▄▄▄▄
+  ██▀▀▀▀█  ██▀▀▀▀█▄  ▀▀██                          ██▀▀▀▀█▄
+ ██▀       ██    ██    ██      ██    ██  ▄▄█████▄  ██    ██   ▄████▄   ██▄████▄   ▄███▄██
+ ██        ██████▀     ██      ██    ██  ██▄▄▄▄ ▀  ██████▀   ██▀  ▀██  ██▀   ██  ██▀  ▀██
+ ██▄       ██          ██      ██    ██   ▀▀▀▀██▄  ██        ██    ██  ██    ██  ██    ██
+  ██▄▄▄▄█  ██          ██▄▄▄   ██▄▄▄███  █▄▄▄▄▄██  ██        ▀██▄▄██▀  ██    ██  ▀██▄▄███
+    ▀▀▀▀   ▀▀           ▀▀▀▀    ▀▀▀▀ ▀▀   ▀▀▀▀▀▀   ▀▀          ▀▀▀▀    ▀▀    ▀▀   ▄▀▀▀ ██
+                                                                                  ▀████▀▀
+)" << '\n';
+	std::this_thread::sleep_for(std::chrono::seconds(2));
+}
+
+void Game::RenderGameOverText() {
+	std::cout << R"(
+    ▄▄▄▄                                             ▄▄▄▄
+  ██▀▀▀▀█                                           ██▀▀██
+ ██         ▄█████▄  ████▄██▄   ▄████▄             ██    ██  ██▄  ▄██   ▄████▄    ██▄████
+ ██  ▄▄▄▄   ▀ ▄▄▄██  ██ ██ ██  ██▄▄▄▄██            ██    ██   ██  ██   ██▄▄▄▄██   ██▀
+ ██  ▀▀██  ▄██▀▀▀██  ██ ██ ██  ██▀▀▀▀▀▀            ██    ██   ▀█▄▄█▀   ██▀▀▀▀▀▀   ██
+  ██▄▄▄██  ██▄▄▄███  ██ ██ ██  ▀██▄▄▄▄█             ██▄▄██     ████    ▀██▄▄▄▄█   ██
+    ▀▀▀▀    ▀▀▀▀ ▀▀  ▀▀ ▀▀ ▀▀    ▀▀▀▀▀               ▀▀▀▀       ▀▀       ▀▀▀▀▀    ▀▀
+
+
+)" << '\n';
+	std::this_thread::sleep_for(std::chrono::seconds(2));
+}
+
+void Game::ClearScreen() {
+#ifdef _WIN32
+	std::system("cls");
+#else
+	std::system("clear");
+#endif
+}
+
+void Game::RenderYouLoseText() {
+	std::cout << R"(
+▄▄▄    ▄▄▄                               ▄▄
+ ██▄  ▄██                                ██
+  ██▄▄██    ▄████▄   ██    ██            ██         ▄████▄   ▄▄█████▄   ▄████▄
+   ▀██▀    ██▀  ▀██  ██    ██            ██        ██▀  ▀██  ██▄▄▄▄ ▀  ██▄▄▄▄██
+    ██     ██    ██  ██    ██            ██        ██    ██   ▀▀▀▀██▄  ██▀▀▀▀▀▀
+    ██     ▀██▄▄██▀  ██▄▄▄███            ██▄▄▄▄▄▄  ▀██▄▄██▀  █▄▄▄▄▄██  ▀██▄▄▄▄█     ██        ██        ██
+    ▀▀       ▀▀▀▀     ▀▀▀▀ ▀▀            ▀▀▀▀▀▀▀▀    ▀▀▀▀     ▀▀▀▀▀▀     ▀▀▀▀▀      ▀▀        ▀▀        ▀▀
+)" << '\n';
+}
+
+

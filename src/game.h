@@ -18,7 +18,10 @@ public:
 	void Render();
 	void Update();
 	void MovePlayerPaddle(MoveDirection direction);
-
+	static void RenderTitle();
+	static void RenderGameOverText();
+	static void ClearScreen();
+	static void RenderYouLoseText();
 private:
 	// Fields
 	bool isGameOver = false;

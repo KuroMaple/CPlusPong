@@ -15,6 +15,8 @@ int main()
 	while(!game.GetIsGameOver()){
 		auto lastUpdateTime = std::chrono::steady_clock::now() - std::chrono::milliseconds(FRAME_DURATION);
 
+		Game::RenderTitle();
+
 		do {
 			auto currTime = std::chrono::steady_clock::now();
 			if (currTime - lastUpdateTime >= FRAME_DURATION) {
@@ -43,6 +45,10 @@ int main()
 
 			std::this_thread::sleep_for(std::chrono::milliseconds(1));
 		} while (!game.GetIsGameOver());
+		Game::ClearScreen();
+		Game::RenderGameOverText();
+		Game::ClearScreen();
+		Game::RenderYouLoseText();
 	restoreInputMode();
 	}
 	return 0;

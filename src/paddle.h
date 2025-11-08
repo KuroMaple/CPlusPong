@@ -11,6 +11,7 @@
 enum class MoveDirection{
     UP,
     DOWN,
+    NONE,
 };
 class Paddle {
 public:
@@ -24,14 +25,23 @@ public:
     [[nodiscard]] int GetHalfHeight() const;
     bool IsPaddleCell(int x, int y);
     [[nodiscard]] std::optional<Vector2D> GetHitCell(const Vector2D &ballPos) const;
+    [[nodiscard]] MoveDirection GetLastMoveDirection() const;
+    void SetLastMoveDirection(MoveDirection direction);
+    void IncrementMoveMomentum();
+    void ResetMoveMomentum();
+    [[nodiscard]] int GetMoveMoveMomentum() const;
 private:
     std::string name;
     char symbol;
     int width;
     int height;
+    int moveMomentum;
+    int baseSpeed = 1;
+    int maxSpeed = 2;
     bool isPlayerControlled;
     Vector2D centerPosition;
     std::vector<Vector2D> paddleCells;
+    MoveDirection lastMoveDirection;
 };
 
 
