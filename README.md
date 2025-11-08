@@ -6,7 +6,7 @@ A C++ practice project where I built the classic game **Pong** from scratch. Thi
 **Key features implemented:**
 - Paddle and ball mechanics with smooth movement
 - Collision detection and ball reflection
-- TODO: Score tracking and game reset logic
+- Score tracking and game reset logic
 - Console-based rendering using 2D vectors
 
 ## Demo
